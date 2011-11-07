@@ -7,7 +7,15 @@
 (defn test-with-google []
   (let [driver (FirefoxDriver.)]
     (.get driver "http://www.google.com/")
+    (println "Original page title is " (.getTitle driver))
     (let [element (.findElement driver (By/name "q"))]
       (.sendKeys element (into-array ["clojure\n"]))
       (.submit element)
-      (println "Page title is " (.getTitle driver)))))
+      (-> (WebDriverWait. driver 10)
+          (.until (proxy [ExpectedCondition] []
+                    (apply [d]
+                      (-> (.getTitle d)
+                          (.toLowerCase)
+                          (.startsWith "clojure"))))))
+      (println "Page title after searching is " (.getTitle driver))
+      (.quit driver))))
