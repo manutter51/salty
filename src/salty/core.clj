@@ -1,6 +1,7 @@
 (ns salty.core
   (:require [salty.impl :as impl]
-            [salty.driver :as driver]))
+            [salty.driver :as driver]
+            [salty.find :as find]))
 
 (defn browser
   "Create a new instance of a given browser driver. Supported
@@ -10,3 +11,4 @@ is :firefox."
   (if-let [browser (first params)]
     (driver/init browser (next params))
     (driver/init :firefox params)))
+
