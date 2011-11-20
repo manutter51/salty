@@ -19,7 +19,7 @@
 
 (defmacro make-find
   [strategy docs]
-  (let [f-name# (symbol (str "by-" (camel-to-lisp strategy)))
+  (let [f-name# (symbol (str "by-" (camel-to-dash strategy)))
         docs# (str "Find a page element " docs)
         by-class# (symbol (str "By/" strategy))]
     `(defn ~f-name#
