@@ -19,7 +19,7 @@
 
 (defmacro make-find
   [strategy docs]
-  (let [f-name# (symbol (str "by-" (camel-to-dash strategy)))
+  (let [f-name# (symbol (str "find-by-" (camel-to-dash (str strategy))))
         docs# (str "Find a page element " docs)
         by-class# (symbol (str "By/" strategy))]
     `(defn ~f-name#
@@ -31,14 +31,14 @@
 
 ;; Generates functions like the following:
 
-;(defn by-id
+;(defn find-by-id
 ;  "Find a page element by its HTML ID attribute."
 ;  [driver-or-elem id all?]
 ;(if all?
 ;  (find-all* By/id id)
 ; (find* (By/id id))))
 
-;(defn by-name
+;(defn find-by-name
 ;  "Find a page element by its name attribute"
 ;  [driver-or-elem name all?]
 ;(if all?
@@ -53,3 +53,12 @@
 (make-find partialLinkText "by part of the text displayed in a link")
 (make-find tagName "by HTML tag name (e.g. \"body\")")
 (make-find xpath "by XPATH")
+
+;; Odd man out
+(defn find-by-javascript
+  "Find a page element by executing arbitrary JavaScript
+code. The JavaScript code MUST return a single DOM element
+(and specifically NOT a jQuery object--use get(0) or
+something similar)."
+  [driver script]
+  (.executeScript driver script))
