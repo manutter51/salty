@@ -25,10 +25,10 @@
         by-class# (symbol (str "By/" strategy))]
     `(defn ~f-name#
        ~docs#
-       [~'driver-or-elem ~strategy ~'all?]
-       (if ~'all?
-         (find-all* (~by-class# ~strategy))
-         (find* (~by-class# ~strategy))))))
+       [~'driver-or-elem ~strategy & ~'all?]
+       (if-let [~'all? (first ~'all?)] 
+         (find-all* ~'driver-or-elem (~by-class# ~strategy))
+         (find* ~'driver-or-elem (~by-class# ~strategy))))))
 
 ;; Generates functions like the following:
 
@@ -36,8 +36,8 @@
 ;  "Find a page element by its HTML ID attribute."
 ;  [driver-or-elem id all?]
 ;(if all?
-;  (find-all* By/id id)
-; (find* (By/id id))))
+;  (find-all* driver-or-elem (By/id id))
+; (find* driver-or-elem (By/id id))))
 
 ;(defn find-by-name
 ;  "Find a page element by its name attribute"
@@ -55,6 +55,17 @@
 (make-find tagName "by HTML tag name (e.g. \"body\")")
 (make-find xpath "by XPATH")
 
+;; convenience aliases
+(defn find-by-css
+  "Alias for find-by-css-selector"
+  [& args]
+  (apply find-by-css-selector args))
+
+(defn find-by-class
+  "Alias for find-by-class-name"
+  [& args]
+  (apply find-by-class-name args))
+
 ;; Special purpose finders
 (defn find-by-javascript
   "Find a page element by executing arbitrary JavaScript
@@ -70,27 +81,10 @@ NOT a jQuery object--use get(0) or something similar."
     elem
     (Select. elem)))
 
-(defn select-by-label
-  "Given a <select> input, select the option with the
-given visible text."
-  [elem label]
-  (.selectByVisibleText (as-select elem) label))
-
-(defn deselect-all
-  "Given a <select> input, make sure none of the options
-are selected."
-  [elem]
-  (.deselectAll (as-select elem)))
-
-;; Using multiple browser windows
+;; Using multiple browser windows and/or frames
 
 (defn get-windows
   "Returns all open windows for current browser driver."
   [driver]
   (.getWindowHandles driver))
 
-(defn use-window
-  "Bring the window to the front, and direct all subsequent
-commands to the contents of this window."
-  [driver name-or-handle]
-  (.window driver name-or-handle))

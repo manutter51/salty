@@ -5,7 +5,7 @@
 (defn type-into
   "Type the into the given input field."
   [fld s]
-  (.sendKey fld (into-array [s])))
+  (.sendKeys fld (into-array [s])))
 
 (defn click-on
   "Click the given button, checkbox, radio button, etc."

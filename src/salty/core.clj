@@ -2,7 +2,8 @@
   (:require [salty.impl :as impl]
             [salty.driver :as driver]
             [salty.find :as find]
-            [salty.util :as util]))
+            [salty.util :as util]
+            [salty.ui :as ui]))
 
 (defn get-browser
   "Create a new instance of a given browser driver. Supported
