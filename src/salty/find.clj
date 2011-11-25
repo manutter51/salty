@@ -66,6 +66,11 @@
   [& args]
   (apply find-by-class-name args))
 
+(defn find-by-tag
+  "Alias for find-by-tag-name"
+  [& args]
+  (apply find-by-tag-name args))
+
 ;; Special purpose finders
 (defn find-by-javascript
   "Find a page element by executing arbitrary JavaScript

@@ -6,12 +6,27 @@
 <h1>Salty Test Page</h1>
 <form method="POST" action="javascript:alert('Submitted');">
   <label for="test-text">Simple text input:</label>
-  <input type="text" name="test-text" id="test-text-input"/>
+  <input type="text" name="test-text" id="test-text-input"
+	 class="test test-text"/>
   <br/>
   <label for="test-textarea">Textarea input:</label>
   <input type="textarea" name="test-textarea" 
+	 class="test test-textarea"
 	 id="test-textarea-input"/>
   <br/>
+  <label for="test-select">Select input:</label>
+  <select name="test-select"
+	 class="test test-select"
+	 id="test-textarea-input">
+    <option name="opt1" value="opt1">Foo</option>
+    <option name="opt2" value="opt2">Bar</option>
+    <option name="opt3" value="opt3">Baz</option>
+    <option name="opt4" value="opt4">Quux</option>
+    <option name="opt5" value="opt5">Five</option>
+    <option name="opt6" value="opt6">Six</option>
+  </select>
+  <br/>
+
 
 </form>
 </body>
