@@ -1,5 +1,6 @@
 (ns salty.find
-  (:import [org.openqa.selenium WebDriver WebElement By])
+  (:import ; [org.openqa.selenium WebDriver WebElement By]
+           org.openqa.selenium.support.ui.Select)
   (:use [clojure.string :only [lower-case]]))
 
 (defn- camel-to-dash
@@ -54,11 +55,42 @@
 (make-find tagName "by HTML tag name (e.g. \"body\")")
 (make-find xpath "by XPATH")
 
-;; Odd man out
+;; Special purpose finders
 (defn find-by-javascript
   "Find a page element by executing arbitrary JavaScript
-code. The JavaScript code MUST return a single DOM element
-(and specifically NOT a jQuery object--use get(0) or
-something similar)."
+code. The JavaScript code MUST return a single DOM element,
+NOT a jQuery object--use get(0) or something similar."
   [driver script]
   (.executeScript driver script))
+
+(defn as-select
+  "Adds handlers specific to manipulating <select> inputs"
+  [elem]
+  (if (instance? Select elem)
+    elem
+    (Select. elem)))
+
+(defn select-by-label
+  "Given a <select> input, select the option with the
+given visible text."
+  [elem label]
+  (.selectByVisibleText (as-select elem) label))
+
+(defn deselect-all
+  "Given a <select> input, make sure none of the options
+are selected."
+  [elem]
+  (.deselectAll (as-select elem)))
+
+;; Using multiple browser windows
+
+(defn get-windows
+  "Returns all open windows for current browser driver."
+  [driver]
+  (.getWindowHandles driver))
+
+(defn use-window
+  "Bring the window to the front, and direct all subsequent
+commands to the contents of this window."
+  [driver name-or-handle]
+  (.window driver name-or-handle))
