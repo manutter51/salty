@@ -32,12 +32,19 @@ Example:
     (-> (find-by-id \"hdr-search-box\") 
         (type \"clojure\\n\" "
   [browser & more]
-  (let [browser (if (keyword? browser)
-                  (get-browser browser)
-                  browser)
-        parsed-args (util/get-options more #{:at :params})
+  (let [parsed-args (util/get-options more #{:at :params})
         body (:args parsed-args)]
-    `(binding [impl/*browser* browser]
-      (if-let [start# ~(:at parsed-args)]
-        (impl/get impl/*browser* start#))
-      ~@body)))
+    `(binding [impl/*driver* (if (keyword? ~browser)
+                                (get-browser ~browser)
+                                ~browser)]
+       (if-let [start# ~(:at parsed-args)]
+         (impl/get-url impl/*driver* start#))
+       ~@body)))
+
+(defn get-url
+  [url]
+  (impl/get-url impl/*driver* url))
+
+(defn end
+  []
+  (impl/end impl/*driver*))
