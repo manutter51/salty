@@ -1,4 +1,5 @@
-(ns salty.util)
+(ns salty.util
+  (:use [clojure.string :only [lower-case]]))
 
 (defn get-options
   "Given a list of arguments like [:a 1 :b 2 3 4] and
@@ -20,3 +21,10 @@ If any option key is not found in the array, return nil for that value."
             (recur (assoc m :args
                           (conj (m :args) a))
                    (next args))))))))
+
+(defn camel-to-dash
+  [s]
+  (apply str (map #(if (Character/isUpperCase %)
+                     (str "-" (lower-case %))
+                     %)
+                  s)))

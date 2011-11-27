@@ -5,7 +5,7 @@
 ;; Forms
 
 (defn type-into
-  "Type the into the given input field."
+  "Type the into the given input field. Focuses on the given field before typing."
   [fld s]
   (.sendKeys fld (into-array [s])))
 
@@ -148,4 +148,5 @@ commands to the contents of this window."
   "Get the current value of the given CSS property."
   [elem css]
   (.getCssValue elem css))
+
 

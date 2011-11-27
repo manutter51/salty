@@ -1,14 +1,7 @@
 (ns salty.find
-  (:import ; [org.openqa.selenium WebDriver WebElement By]
+  (:import org.openqa.selenium.By
            org.openqa.selenium.support.ui.Select)
-  (:use [clojure.string :only [lower-case]]))
-
-(defn- camel-to-dash
-  [s]
-  (apply str (map #(if (Character/isUpperCase %)
-                     (str "-" (lower-case %))
-                     %)
-                  s)))
+  (:use [salty.util :only [camel-to-dash]]))
 
 (defn- find*
   [driver-or-elem by]

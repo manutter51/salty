@@ -1,5 +1,5 @@
 (ns salty.impl
-  (:import [org.openqa.selenium By WebDriver WebElement]
+  (:import [org.openqa.selenium By WebDriver WebElement Cookie]
            org.openqa.selenium.firefox.FirefoxDriver
            [org.openqa.selenium.support.ui ExpectedCondition WebDriverWait]))
 
@@ -22,7 +22,7 @@
       (println "Page title after searching is " (.getTitle driver))
       (.quit driver))))
 
-(defn get-url
+(defn go-to-url
   "Given a valid WebDriver, open the web page at the given
 url."
   [driver url]
@@ -32,3 +32,27 @@ url."
   "Close current WebDriver instance."
   [driver]
   (.quit driver))
+
+(defn add-cookie
+  "Set a cookie on same domain as the last page loaded."
+  [driver k v]
+  (let [cookie (Cookie. k v)]
+    (.addCookie (.manage driver) cookie)))
+
+(defn get-cookies
+  "Get the current cookies"
+  [driver]
+  (let [cookies (.getCookies (.manage driver))]
+    (into #{} (for [c cookies]
+                [(.getName c) (.getValue c)]))))
+
+(defn delete-cookie
+  "Delete the cookie with the given name."
+  [driver cookie]
+  (.deleteCookieNamed (.manage driver) cookie))
+
+(defn delete-all-cookies
+  "Delete all cookies associated with the domain of the last page loaded."
+  [driver]
+  (.deleteAllCookies (.manage driver)))
+
